@@ -4,6 +4,6 @@ This is a numerical simulation of an astrophysical jet. Those jets are outflows 
 
 ## Prerequisites
 
-`apt install git`bash
-`apt install perl`bash
-`apt install libopenmpi`bash
+`apt install git
+apt install perl
+apt install libopenmpi`
