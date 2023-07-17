@@ -4,8 +4,14 @@ This is a numerical simulation of an astrophysical jet. Those jets are outflows 
 
 ## Prerequisites
 
-`apt install git
+`apt install git`
 
-apt install perl
+`apt install perl`
 
-apt install libopenmpi`
+`apt install gfortran`
+
+`apt install openmpi-bin libopenmpi-dev`
+
+`git clone https://github.com/amrvac/amrvac.git`
+
+Note: In this repository, we use MPI-AMRVAC version 3.1 which is the latest version at the time of writing this README.md file. At the time of writing this README.md file, the latest release is 3.0.
