@@ -20,3 +20,22 @@ Note: In this repository, we use MPI-AMRVAC version 3.1 which is the latest vers
 
 This repository contains the following files:
 
+## Running The Simulation
+
+To run the simulation, first you need to create an output directory (if not created already).
+
+`mkdir output`
+
+Then, you need to compile the code. Go to root directory of MPI-AMRVAC 3.1 and run
+
+`.\setup.pl -d=2`
+
+Then, go to the directory of this repository and run
+
+`make`
+
+Finally, run the simulation using
+
+`mpirun -np 112 ./amrvac -i jet.par`
+
+NOTE : The number of processors used in the simulation is 112. You can change (and probably want) to change it. For the provided parameter file, you need a lot of CPUs or a lot of time. All simulations in the paper were run on 112 cores from AMD EPYC 7713 CPU.
