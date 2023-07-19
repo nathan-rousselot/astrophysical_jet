@@ -44,7 +44,7 @@ contains
     double precision, intent(in) :: x(ixG^S,1:ndim)
     double precision, intent(inout) :: w(ixG^S,1:nw)
 
-    where(dabs(x(ix^S,1))<0.015d0.and.x(ix^S,2)<0.015d0)
+    where(dabs(x(ix^S,1))<0.01d0.and.x(ix^S,2)<0.01d0)
        w(ix^S,rho_)=rhoj
        w(ix^S,mom(1))=zero
        w(ix^S,mom(2))=rhoj*vj
@@ -85,7 +85,7 @@ contains
          w(ixOmin1:ixOmax1,ix2,e_)    = w(ixOmin1:ixOmax1,ixOmax2+1,e_)
       enddo
       ! in jet zone: fix all primitives to the jet values
-      where(dabs(x(ixO^S,1))<0.015d0)
+      where(dabs(x(ixO^S,1))<0.01d0)
          w(ixO^S,rho_)=rhoj
          w(ixO^S,mom(1))=zero
          w(ixO^S,mom(2))=vj

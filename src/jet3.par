@@ -12,7 +12,7 @@
  &savelist
    itsave(1,1)     = 0
    itsave(1,2)     = 0
-   dtsave_dat      = 0.5d0
+   dtsave_dat      = 2.d0
    ditsave_log     = 1000
 /
 
@@ -22,8 +22,8 @@
 /
 
  &methodlist
-   time_stepper = 'threestep'
-   flux_scheme     = 20*'hll'
+   time_stepper = 'fourstep'
+   flux_scheme     = 20*'hllc'
    limiter         = 20*'minmod'
 /
 
@@ -34,9 +34,9 @@
   typeboundary_max2 = 4*'cont'
 /
  &meshlist
-   refine_max_level   = 5
-   domain_nx1         = 40
-   domain_nx2         = 80
+   refine_max_level   = 3
+   domain_nx1         = 80
+   domain_nx2         = 160
    block_nx1          = 10
    block_nx2          = 10
    xprobmin1       = -3d0
