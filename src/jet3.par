@@ -12,7 +12,7 @@
  &savelist
    itsave(1,1)     = 0
    itsave(1,2)     = 0
-   dtsave_dat      = 2.d0
+   dtsave_dat      = 0.5d0
    ditsave_log     = 1000
 /
 
@@ -22,9 +22,10 @@
 /
 
  &methodlist
-   time_stepper = 'fourstep'
+   time_stepper = 'fivestep'
    flux_scheme     = 20*'hllc'
-   limiter         = 20*'minmod'
+   limiter         = 20*'ppm'
+   small_values_method = 'average'
 /
 
 &boundlist
@@ -34,11 +35,11 @@
   typeboundary_max2 = 4*'cont'
 /
  &meshlist
-   refine_max_level   = 3
-   domain_nx1         = 80
-   domain_nx2         = 160
-   block_nx1          = 10
-   block_nx2          = 10
+   refine_max_level   = 6
+   domain_nx1         = 32
+   domain_nx2         = 64
+   block_nx1          = 16
+   block_nx2          = 16
    xprobmin1       = -3d0
    xprobmax1       =  3d0
    xprobmin2       =  0.0d0
@@ -47,6 +48,7 @@
  /
   
  &paramlist
-  slowsteps        = 100
+  typecourant='maxsum'
+  slowsteps        = 10
   courantpar       = 0.8d0
  /
