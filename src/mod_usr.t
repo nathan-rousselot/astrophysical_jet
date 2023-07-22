@@ -18,10 +18,9 @@ contains
 
   subroutine initglobaldata_usr
     
-    hd_gamma=1.4d0
-    ! hd_gamma=1.d0
+    hd_gamma=5.0d0/3.0d0
     ! rhoj=hd_gamma
-    rhoj=1.d0
+    rhoj=1.0d0
     if(iprob==1)then
         eta=10.d0
     endif
@@ -31,8 +30,7 @@ contains
     if(iprob==3)then
         eta=0.01d0
     endif
-    ! vj=100.d0
-    vj = 5.212261824420211d0 ! conversion equation : v_j*cm_to_kpc/s_to_t 
+    vj=5.212261824420211d0
 
   end subroutine initglobaldata_usr
 
@@ -44,14 +42,14 @@ contains
     double precision, intent(in) :: x(ixG^S,1:ndim)
     double precision, intent(inout) :: w(ixG^S,1:nw)
 
-    where(dabs(x(ix^S,1))<0.01d0.and.x(ix^S,2)<0.01d0)
+    where(dabs(x(ix^S,1)-3.2d0)<=0.1d0.and.x(ix^S,2)<=0.1d0)
        w(ix^S,rho_)=rhoj
        w(ix^S,mom(1))=zero
        w(ix^S,mom(2))=rhoj*vj
-       w(ix^S,e_)=one/(hd_gamma-one)+0.5d0*rhoj*vj**2.0d0
+       w(ix^S,p_)= (rhoj*vj**2.0d0)/hd_gamma
     else where
-       w(ix^S,rho_) = rhoj/eta
-       w(ix^S,e_) = one/(hd_gamma-one)
+       w(ix^S,rho_) = rhoj/(eta*2.0d0)
+       w(ix^S,p_) = (rhoj*vj**2.0d0)/hd_gamma  ! one/(hd_gamma) ! -one)+0.5d0*rhoj*vj**2.0d0
        w(ix^S,mom(1)) = zero
        w(ix^S,mom(2)) = zero
     end where
@@ -79,17 +77,17 @@ contains
       call hd_to_primitive(ixG^L,ixOInt^L,w,x)
       ! extrapolate primitives, first everywhere on boundary
       do ix2 = ixOmin2,ixOmax2
-         w(ixOmin1:ixOmax1,ix2,rho_)  = w(ixOmin1:ixOmax1,ixOmax2+1,rho_)
-         w(ixOmin1:ixOmax1,ix2,mom(1))= w(ixOmin1:ixOmax1,ixOmax2+1,mom(1))
-         w(ixOmin1:ixOmax1,ix2,mom(2))= w(ixOmin1:ixOmax1,ixOmax2+1,mom(2))
-         w(ixOmin1:ixOmax1,ix2,e_)    = w(ixOmin1:ixOmax1,ixOmax2+1,e_)
+         w(ixOmin1:ixOmax1,ix2,rho_)  = w(ixOmin1:ixOmax1,2*ixOmax2-ix2+1,rho_)
+         w(ixOmin1:ixOmax1,ix2,mom(1))= w(ixOmin1:ixOmax1,2*ixOmax2-ix2+1,mom(1))
+         w(ixOmin1:ixOmax1,ix2,mom(2))=-w(ixOmin1:ixOmax1,2*ixOmax2-ix2+1,mom(2))
+         w(ixOmin1:ixOmax1,ix2,p_)    = w(ixOmin1:ixOmax1,2*ixOmax2-ix2+1,p_)
       enddo
       ! in jet zone: fix all primitives to the jet values
-      where(dabs(x(ixO^S,1))<0.01d0)
+      where(dabs(x(ixO^S,1)-3.2d0)<=0.1d0)
          w(ixO^S,rho_)=rhoj
          w(ixO^S,mom(1))=zero
          w(ixO^S,mom(2))=vj
-         w(ixO^S,e_)=one
+         w(ixO^S,p_)=(rhoj*vj**2.0d0)/hd_gamma   !  one/(hd_gamma) !  -one)+0.5d0*rhoj*vj**2.0d0 ! one
       endwhere
       ! switch to conservative variables in internal zone
       call hd_to_conserved(ixG^L,ixOInt^L,w,x)
@@ -121,7 +119,7 @@ contains
     integer, intent(inout) :: refine, coarsen
 
     ! always refine the jet inlet zone
-    if (minval(dabs(x(ix^S,1))) < 0.1.and.minval(dabs(x(ix^S,2))) < 0.1) refine=1
+    if (minval(dabs(x(ix^S,1)+3.2d0)) <= 0.15.and.minval(dabs(x(ix^S,2)+3.0d0)) <= 0.15) refine=1
 
   end subroutine specialrefine_grid
 
