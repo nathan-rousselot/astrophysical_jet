@@ -49,9 +49,12 @@ contains
         eta=0.01d0
     endif
     vj=5.212261824420211d0
+<<<<<<< HEAD
     !vj=4.0d0
     n1 = 8d0
     n2 = 6d0
+=======
+>>>>>>> 6f17c1579a4ba48f71aff6dbee7046275c33f329
 
   end subroutine initglobaldata_usr
 
@@ -64,6 +67,7 @@ contains
     double precision, intent(inout) :: w(ixG^S,1:nw)
     double precision :: R(ixG^S),Z(ixG^S)
 
+<<<<<<< HEAD
     ! radial direction R/Rj
     R(ix^S)=x(ix^S,1)/0.1d0
     ! axial direction Z/Zj
@@ -79,6 +83,18 @@ contains
        w(ix^S,p_)=(rhoj*vj**2.0d0)/hd_gamma
        w(ix^S,mom(1))=zero
        w(ix^S,mom(2))=zero
+=======
+    where(dabs(x(ix^S,1)-3.2d0)<=0.1d0.and.x(ix^S,2)<=0.1d0)
+       w(ix^S,rho_)=rhoj
+       w(ix^S,mom(1))=zero
+       w(ix^S,mom(2))=rhoj*vj
+       w(ix^S,p_)= (rhoj*vj**2.0d0)/hd_gamma
+    else where
+       w(ix^S,rho_) = rhoj/(eta*2.0d0)
+       w(ix^S,p_) = (rhoj*vj**2.0d0)/hd_gamma  ! one/(hd_gamma) ! -one)+0.5d0*rhoj*vj**2.0d0
+       w(ix^S,mom(1)) = zero
+       w(ix^S,mom(2)) = zero
+>>>>>>> 6f17c1579a4ba48f71aff6dbee7046275c33f329
     end where
 
     !w(ix^S,mom(1)) = 0.0d0
@@ -120,7 +136,11 @@ contains
       do ix2 = ixOmin2,ixOmax2
          w(ixOmin1:ixOmax1,ix2,rho_)  = w(ixOmin1:ixOmax1,2*ixOmax2-ix2+1,rho_)
          w(ixOmin1:ixOmax1,ix2,mom(1))= w(ixOmin1:ixOmax1,2*ixOmax2-ix2+1,mom(1))
+<<<<<<< HEAD
          w(ixOmin1:ixOmax1,ix2,mom(2))= -w(ixOmin1:ixOmax1,2*ixOmax2-ix2+1,mom(2))
+=======
+         w(ixOmin1:ixOmax1,ix2,mom(2))=-w(ixOmin1:ixOmax1,2*ixOmax2-ix2+1,mom(2))
+>>>>>>> 6f17c1579a4ba48f71aff6dbee7046275c33f329
          w(ixOmin1:ixOmax1,ix2,p_)    = w(ixOmin1:ixOmax1,2*ixOmax2-ix2+1,p_)
       enddo
      !case(3)
@@ -130,6 +150,7 @@ contains
       ! extrapolate primitives, first everywhere on boundary
 
       ! in jet zone: fix all primitives to the jet values
+<<<<<<< HEAD
       where(R(ixO^S)<=1.0d0)!.and.Z(ixO^S)<=1.0d0)
          w(ixO^S,rho_)=w(ixO^S,rho_)+(rhoj-w(ixO^S,rho_))/cosh(((dabs(x(ixO^S,1)-3.2d0))/(1.4d0))**n1)
          w(ixO^S,mom(1))=w(ixO^S,mom(1))+(zero-w(ixO^S,mom(1)))/cosh(dabs(x(ixO^S,1)-3.2d0)**n2)
@@ -148,6 +169,14 @@ contains
       !   w(ixO^S,mom(2))=-w(ixO^S,mom(2))
       !   w(ixO^S,p_)=w(ixO^S,p_)
       !end where
+=======
+      where(dabs(x(ixO^S,1)-3.2d0)<=0.1d0)
+         w(ixO^S,rho_)=rhoj
+         w(ixO^S,mom(1))=zero
+         w(ixO^S,mom(2))=vj
+         w(ixO^S,p_)=(rhoj*vj**2.0d0)/hd_gamma   !  one/(hd_gamma) !  -one)+0.5d0*rhoj*vj**2.0d0 ! one
+      endwhere
+>>>>>>> 6f17c1579a4ba48f71aff6dbee7046275c33f329
       ! switch to conservative variables in internal zone
       call hd_to_conserved(ixG^L,ixOInt^L,w,x)
       ! switch to conservative variables in ghost cells
@@ -179,11 +208,15 @@ contains
     double precision :: R(ixG^S), Z(ixG^S)
 
     ! always refine the jet inlet zone
+<<<<<<< HEAD
     !if (minval(dabs(x(ix^S,1))) <= 0.3.and.minval(dabs(x(ix^S,2))) <= 0.3) refine=1
 
     R(ix^S)=x(ix^S,1)/0.1d0
     Z(ix^S)=x(ix^S,2)/0.1d0
     if (any((R(ix^S) <= 3.0d0).and.(Z(ix^S) <= 3.0d0))) refine=1
+=======
+    if (minval(dabs(x(ix^S,1)+3.2d0)) <= 0.15.and.minval(dabs(x(ix^S,2)+3.0d0)) <= 0.15) refine=1
+>>>>>>> 6f17c1579a4ba48f71aff6dbee7046275c33f329
 
   end subroutine specialrefine_grid
   
