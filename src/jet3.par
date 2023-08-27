@@ -22,16 +22,10 @@
 
  &methodlist
    time_stepper = 'fivestep'
-<<<<<<< HEAD
    time_integrator = 'ssprk5'
    flux_scheme     = 20*'hllc'
    limiter         = 20*'cada3'
    small_values_method='average'
-=======
-   flux_scheme     = 20*'hllc'
-   limiter         = 20*'ppm'
-   small_values_method = 'average'
->>>>>>> 6f17c1579a4ba48f71aff6dbee7046275c33f329
 /
 
 &boundlist
@@ -41,7 +35,6 @@
   typeboundary_max2 = 4*'cont'
 /
  &meshlist
-<<<<<<< HEAD
    refine_max_level   = 2
    w_refine_weight(1) = 0.5d0
    w_refine_weight(2) = 0.5d0
@@ -51,15 +44,6 @@
    block_nx2          = 20
    xprobmin1       =  0d0
    xprobmax1       =  3.2d0
-=======
-   refine_max_level   = 6
-   domain_nx1         = 32
-   domain_nx2         = 64
-   block_nx1          = 16
-   block_nx2          = 16
-   xprobmin1       = -3d0
-   xprobmax1       =  3d0
->>>>>>> 6f17c1579a4ba48f71aff6dbee7046275c33f329
    xprobmin2       =  0.0d0
    xprobmax2       =  12.0d0
    iprob=3
